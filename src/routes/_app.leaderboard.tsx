@@ -74,8 +74,10 @@ function LeaderboardPage() {
               <p className="mt-2 text-center text-xs font-bold">{p.name}</p>
               <p className="text-[11px] text-muted-foreground">{p.xp.toLocaleString()} XP</p>
               <motion.div
-                initial={{ height: 0 }}
-                animate={{ height: "auto" }}
+                initial={{ scaleY: 0 }}
+                animate={{ scaleY: 1 }}
+                transition={{ delay: 0.15 + i * 0.1, duration: 0.5 }}
+                style={{ transformOrigin: "bottom" }}
                 className={`mt-2 w-full rounded-t-2xl bg-linear-to-t from-primary/15 to-primary/45 ${heights[i]}`}
               />
             </motion.div>
