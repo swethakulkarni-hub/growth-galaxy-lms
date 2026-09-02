@@ -457,7 +457,7 @@ export const streakHeatmap = [
 ];
 
 export function gapsForRole(roleId: string) {
-  const role = targetRoles.find((r) => r.id === roleId) ?? targetRoles[0];
+  const role = targetRoles.find((r) => r.id === roleId) ?? targetRoles[0]!;
   return skills
     .map((s) => {
       const required = role.benchmark[s.name] ?? 40;

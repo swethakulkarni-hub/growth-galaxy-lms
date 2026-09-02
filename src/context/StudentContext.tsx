@@ -34,7 +34,7 @@ export function StudentProvider({ children }: { children: ReactNode }) {
   const [quests, setQuests] = useState<QuestState[]>(() =>
     seedQuests.map((q) => ({ ...q, claimed: false })),
   );
-  const [roleId, setRoleId] = useState(targetRoles[0].id);
+  const [roleId, setRoleId] = useState(targetRoles[0]!.id);
   const [signedIn, setSignedIn] = useState(false);
 
   const claimQuest = useCallback(
@@ -73,7 +73,7 @@ export function StudentProvider({ children }: { children: ReactNode }) {
       claimQuest,
       roleId,
       setRoleId,
-      role: targetRoles.find((r) => r.id === roleId) ?? targetRoles[0],
+      role: targetRoles.find((r) => r.id === roleId) ?? targetRoles[0]!,
       signedIn,
       signIn: () => setSignedIn(true),
       signOut: () => setSignedIn(false),

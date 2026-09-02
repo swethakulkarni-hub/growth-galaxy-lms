@@ -27,7 +27,7 @@ export const Route = createFileRoute("/_app/leaderboard")({
 function LeaderboardPage() {
   const [scope, setScope] = useState<"weekly" | "all">("weekly");
   const rows = scope === "weekly" ? weeklyLeaderboard : leaderboard;
-  const podium = [rows[1], rows[0], rows[2]];
+  const podium = [rows[1]!, rows[0]!, rows[2]!];
   const heights = ["h-24", "h-32", "h-20"];
   const medals = ["🥈", "🥇", "🥉"];
 

@@ -110,7 +110,7 @@ function CertificationsPage() {
         {certTracks.map((track, ti) => {
           const done = track.stages.filter((s) => s.status === "done").length;
           const pct = Math.round((done / track.stages.length) * 100);
-          const accent = accentMap[track.accent];
+          const accent = accentMap[track.accent] ?? accentMap.violet!;
           return (
             <motion.section
               key={track.id}
@@ -143,16 +143,8 @@ function CertificationsPage() {
                       <div className="flex w-32 flex-col items-center text-center">
                         <motion.div
                           whileHover={{ scale: stage.status === "locked" ? 1 : 1.08 }}
-                          animate={
-                            stage.status === "current"
-                              ? { y: [0, -6, 0] }
-                              : { y: 0 }
-                          }
-                          transition={
-                            stage.status === "current"
-                              ? { duration: 1.8, repeat: Infinity, ease: "easeInOut" }
-                              : undefined
-                          }
+                          animate={stage.status === "current" ? { y: [0, -6, 0] } : { y: 0 }}
+                          transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
                           className={`flex h-14 w-14 items-center justify-center rounded-2xl text-lg font-bold ${
                             stage.status === "done"
                               ? `${accent.bar} text-background shadow-pop`
