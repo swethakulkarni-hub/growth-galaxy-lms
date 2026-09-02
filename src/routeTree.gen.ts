@@ -10,33 +10,117 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AppRouteImport } from './routes/_app'
+import { Route as AppCertificationsRouteImport } from './routes/_app.certifications'
+import { Route as AppDashboardRouteImport } from './routes/_app.dashboard'
+import { Route as AppLeaderboardRouteImport } from './routes/_app.leaderboard'
+import { Route as AppMarketRouteImport } from './routes/_app.market'
+import { Route as AppProfileRouteImport } from './routes/_app.profile'
+import { Route as AppSkillsRouteImport } from './routes/_app.skills'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AppRoute = AppRouteImport.update({
+  id: '/_app',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AppCertificationsRoute = AppCertificationsRouteImport.update({
+  id: '/certifications',
+  path: '/certifications',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppDashboardRoute = AppDashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppLeaderboardRoute = AppLeaderboardRouteImport.update({
+  id: '/leaderboard',
+  path: '/leaderboard',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppMarketRoute = AppMarketRouteImport.update({
+  id: '/market',
+  path: '/market',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppProfileRoute = AppProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppSkillsRoute = AppSkillsRouteImport.update({
+  id: '/skills',
+  path: '/skills',
+  getParentRoute: () => AppRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/certifications': typeof AppCertificationsRoute
+  '/dashboard': typeof AppDashboardRoute
+  '/leaderboard': typeof AppLeaderboardRoute
+  '/market': typeof AppMarketRoute
+  '/profile': typeof AppProfileRoute
+  '/skills': typeof AppSkillsRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/certifications': typeof AppCertificationsRoute
+  '/dashboard': typeof AppDashboardRoute
+  '/leaderboard': typeof AppLeaderboardRoute
+  '/market': typeof AppMarketRoute
+  '/profile': typeof AppProfileRoute
+  '/skills': typeof AppSkillsRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_app': typeof AppRouteWithChildren
+  '/_app/certifications': typeof AppCertificationsRoute
+  '/_app/dashboard': typeof AppDashboardRoute
+  '/_app/leaderboard': typeof AppLeaderboardRoute
+  '/_app/market': typeof AppMarketRoute
+  '/_app/profile': typeof AppProfileRoute
+  '/_app/skills': typeof AppSkillsRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/certifications'
+    | '/dashboard'
+    | '/leaderboard'
+    | '/market'
+    | '/profile'
+    | '/skills'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/certifications'
+    | '/dashboard'
+    | '/leaderboard'
+    | '/market'
+    | '/profile'
+    | '/skills'
+  id:
+    | '__root__'
+    | '/'
+    | '/_app'
+    | '/_app/certifications'
+    | '/_app/dashboard'
+    | '/_app/leaderboard'
+    | '/_app/market'
+    | '/_app/profile'
+    | '/_app/skills'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AppRoute: typeof AppRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +132,81 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_app': {
+      id: '/_app'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AppRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_app/certifications': {
+      id: '/_app/certifications'
+      path: '/certifications'
+      fullPath: '/certifications'
+      preLoaderRoute: typeof AppCertificationsRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/dashboard': {
+      id: '/_app/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof AppDashboardRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/leaderboard': {
+      id: '/_app/leaderboard'
+      path: '/leaderboard'
+      fullPath: '/leaderboard'
+      preLoaderRoute: typeof AppLeaderboardRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/market': {
+      id: '/_app/market'
+      path: '/market'
+      fullPath: '/market'
+      preLoaderRoute: typeof AppMarketRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/profile': {
+      id: '/_app/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof AppProfileRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/skills': {
+      id: '/_app/skills'
+      path: '/skills'
+      fullPath: '/skills'
+      preLoaderRoute: typeof AppSkillsRouteImport
+      parentRoute: typeof AppRoute
+    }
   }
 }
 
+interface AppRouteChildren {
+  AppCertificationsRoute: typeof AppCertificationsRoute
+  AppDashboardRoute: typeof AppDashboardRoute
+  AppLeaderboardRoute: typeof AppLeaderboardRoute
+  AppMarketRoute: typeof AppMarketRoute
+  AppProfileRoute: typeof AppProfileRoute
+  AppSkillsRoute: typeof AppSkillsRoute
+}
+
+const AppRouteChildren: AppRouteChildren = {
+  AppCertificationsRoute: AppCertificationsRoute,
+  AppDashboardRoute: AppDashboardRoute,
+  AppLeaderboardRoute: AppLeaderboardRoute,
+  AppMarketRoute: AppMarketRoute,
+  AppProfileRoute: AppProfileRoute,
+  AppSkillsRoute: AppSkillsRoute,
+}
+
+const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AppRoute: AppRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
