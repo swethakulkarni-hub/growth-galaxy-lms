@@ -19,7 +19,13 @@ export function CountUp({ to, duration = 1100 }: { to: number; duration?: number
   return <>{value}</>;
 }
 
-export function Sparkline({ data, tone = "primary" }: { data: number[]; tone?: string }) {
+export function Sparkline({
+  data,
+  className = "stroke-primary",
+}: {
+  data: number[];
+  className?: string;
+}) {
   const max = Math.max(...data);
   const min = Math.min(...data);
   const span = max - min || 1;
