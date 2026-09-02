@@ -110,7 +110,7 @@ function CertificationsPage() {
         {certTracks.map((track, ti) => {
           const done = track.stages.filter((s) => s.status === "done").length;
           const pct = Math.round((done / track.stages.length) * 100);
-          const accent = accentMap[track.accent] ?? accentMap.violet!;
+          const accent = accentMap[track.accent] ?? accentMap["violet"]!;
           return (
             <motion.section
               key={track.id}
