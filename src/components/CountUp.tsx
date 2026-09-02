@@ -37,7 +37,7 @@ export function Sparkline({
     <svg viewBox="0 0 100 30" preserveAspectRatio="none" className="h-8 w-full">
       <polyline
         points={points}
-        className={`fill-none stroke-${tone}`}
+        className={`fill-none ${className}`}
         strokeWidth="2.5"
         strokeLinecap="round"
         strokeLinejoin="round"
