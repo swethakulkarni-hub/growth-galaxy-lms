@@ -27,7 +27,7 @@ function fallbackBrief(role: string, skills: { name: string; level: number; requ
   return {
     headline: `You're already in range for ${role}. Three skills are doing most of the holding back — fix them in four focused weeks.`,
     focus: top.map((s) => ({
-      skill: s.skill_name ?? s.name,
+      skill: s.name,
       why: `You're at ${s.level} and the role expects ${s.required}. Closing this ${s.gap}-point gap is the fastest lift to your readiness score.`,
     })),
     weeks: [
