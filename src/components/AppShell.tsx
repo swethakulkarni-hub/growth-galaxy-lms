@@ -18,6 +18,7 @@ import { useStudent } from "@/context/StudentContext";
 
 const nav = [
   { to: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
+  { to: "/curriculum", label: "Curriculum", icon: BookOpen },
   { to: "/skills", label: "Skill Gaps", icon: Target },
   { to: "/market", label: "Market Pulse", icon: TrendingUp },
   { to: "/certifications", label: "Cert Arena", icon: Award },
