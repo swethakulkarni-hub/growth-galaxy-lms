@@ -281,38 +281,6 @@ function DashboardPage() {
         </div>
       </motion.section>
 
-      <div className="grid gap-4 md:grid-cols-3">
-        {[
-          {
-            icon: Flame,
-            title: `${streak} days on fire`,
-            body: `Best ever: ${student.bestStreak} days. Beat it and unlock the Inferno badge.`,
-            tone: "bg-coral/12 text-coral",
-          },
-          {
-            icon: Star,
-            title: "2 lessons from a badge",
-            body: "Finish the Query Tuning Lab to earn Query Slayer.",
-            tone: "bg-sun/20 text-sun-foreground",
-          },
-          {
-            icon: Sparkles,
-            title: "New market brief ready",
-            body: `Fresh AI insights for ${role.title} are waiting on Market Pulse.`,
-            tone: "bg-primary/12 text-primary",
-          },
-        ].map((n) => (
-          <div key={n.title} className="card-pop flex items-start gap-3 p-5">
-            <span className={`flex h-10 w-10 items-center justify-center rounded-xl ${n.tone}`}>
-              <n.icon className="h-5 w-5" />
-            </span>
-            <div>
-              <p className="text-sm font-bold">{n.title}</p>
-              <p className="mt-0.5 text-xs text-muted-foreground">{n.body}</p>
-            </div>
-          </div>
-        ))}
-      </div>
     </div>
   );
 }
