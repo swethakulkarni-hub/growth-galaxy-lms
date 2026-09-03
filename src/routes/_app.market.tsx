@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { motion } from "motion/react";
-import { ArrowDownRight, ArrowUpRight, Briefcase, Users } from "lucide-react";
-import { gapsForRole, targetRoles, trendingCourses, trendingSkills } from "@/data/demo";
+import { ArrowDownRight, ArrowUpRight, Users } from "lucide-react";
+import { gapsForRole, trendingCourses, trendingSkills } from "@/data/demo";
 import { useStudent } from "@/context/StudentContext";
 import { PageHeading } from "@/components/AppShell";
 import { AiPanel } from "@/components/AiPanel";
@@ -46,51 +46,6 @@ function MarketPage() {
         title={`Market briefing · ${role.title}`}
         skills={gaps.map((g) => ({ name: g.name, level: g.level, required: g.required }))}
       />
-
-      <section>
-        <h2 className="mb-3 text-xl font-bold">Hot roles right now</h2>
-        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-          {targetRoles.map((r, i) => (
-            <motion.article
-              key={r.id}
-              initial={{ opacity: 0, y: 18 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: i * 0.06 }}
-              whileHover={{ y: -5 }}
-              className="card-pop p-5"
-            >
-              <div className="flex items-start justify-between">
-                <span className="text-3xl">{r.emoji}</span>
-                <span
-                  className={`flex items-center gap-1 rounded-full px-2.5 py-1 text-[11px] font-bold ${
-                    r.growth > 15 ? "bg-lime/25 text-lime-foreground" : "bg-sky/20 text-sky-foreground"
-                  }`}
-                >
-                  <ArrowUpRight className="h-3 w-3" /> {r.growth}%
-                </span>
-              </div>
-              <h3 className="mt-3 text-base font-bold">{r.title}</h3>
-              <p className="mt-1 text-xs text-muted-foreground">{r.blurb}</p>
-              <Sparkline data={r.openingsTrend} className="stroke-primary" />
-              <div className="mt-2 space-y-1.5 text-xs font-semibold">
-                <p className="flex items-center gap-1.5 text-muted-foreground">
-                  <Briefcase className="h-3.5 w-3.5" /> {r.salary}
-                </p>
-                <div className="flex flex-wrap gap-1.5 pt-1">
-                  {Object.entries(r.benchmark)
-                    .sort((a, b) => b[1] - a[1])
-                    .slice(0, 3)
-                    .map(([skill]) => (
-                      <span key={skill} className="rounded-full bg-muted px-2 py-0.5 text-[11px]">
-                        {skill}
-                      </span>
-                    ))}
-                </div>
-              </div>
-            </motion.article>
-          ))}
-        </div>
-      </section>
 
       <div className="grid gap-5 lg:grid-cols-2">
         {[

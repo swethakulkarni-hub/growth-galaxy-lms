@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion } from "motion/react";
 import { toast } from "sonner";
-import { ArrowRight, Flame, Sparkles, Star, Zap } from "lucide-react";
+import { ArrowRight, Zap } from "lucide-react";
 import { myCourses, student } from "@/data/demo";
 import { useStudent } from "@/context/StudentContext";
 import { CountUp } from "@/components/CountUp";
