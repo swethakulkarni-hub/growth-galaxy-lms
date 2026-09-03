@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AppRouteImport } from './routes/_app'
 import { Route as AppCertificationsRouteImport } from './routes/_app.certifications'
+import { Route as AppCurriculumRouteImport } from './routes/_app.curriculum'
 import { Route as AppDashboardRouteImport } from './routes/_app.dashboard'
 import { Route as AppLeaderboardRouteImport } from './routes/_app.leaderboard'
 import { Route as AppMarketRouteImport } from './routes/_app.market'
@@ -30,6 +31,11 @@ const AppRoute = AppRouteImport.update({
 const AppCertificationsRoute = AppCertificationsRouteImport.update({
   id: '/certifications',
   path: '/certifications',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppCurriculumRoute = AppCurriculumRouteImport.update({
+  id: '/curriculum',
+  path: '/curriculum',
   getParentRoute: () => AppRoute,
 } as any)
 const AppDashboardRoute = AppDashboardRouteImport.update({
@@ -61,6 +67,7 @@ const AppSkillsRoute = AppSkillsRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/certifications': typeof AppCertificationsRoute
+  '/curriculum': typeof AppCurriculumRoute
   '/dashboard': typeof AppDashboardRoute
   '/leaderboard': typeof AppLeaderboardRoute
   '/market': typeof AppMarketRoute
@@ -70,6 +77,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/certifications': typeof AppCertificationsRoute
+  '/curriculum': typeof AppCurriculumRoute
   '/dashboard': typeof AppDashboardRoute
   '/leaderboard': typeof AppLeaderboardRoute
   '/market': typeof AppMarketRoute
@@ -81,6 +89,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_app': typeof AppRouteWithChildren
   '/_app/certifications': typeof AppCertificationsRoute
+  '/_app/curriculum': typeof AppCurriculumRoute
   '/_app/dashboard': typeof AppDashboardRoute
   '/_app/leaderboard': typeof AppLeaderboardRoute
   '/_app/market': typeof AppMarketRoute
@@ -92,6 +101,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/certifications'
+    | '/curriculum'
     | '/dashboard'
     | '/leaderboard'
     | '/market'
@@ -101,6 +111,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/certifications'
+    | '/curriculum'
     | '/dashboard'
     | '/leaderboard'
     | '/market'
@@ -111,6 +122,7 @@ export interface FileRouteTypes {
     | '/'
     | '/_app'
     | '/_app/certifications'
+    | '/_app/curriculum'
     | '/_app/dashboard'
     | '/_app/leaderboard'
     | '/_app/market'
@@ -144,6 +156,13 @@ declare module '@tanstack/react-router' {
       path: '/certifications'
       fullPath: '/certifications'
       preLoaderRoute: typeof AppCertificationsRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/curriculum': {
+      id: '/_app/curriculum'
+      path: '/curriculum'
+      fullPath: '/curriculum'
+      preLoaderRoute: typeof AppCurriculumRouteImport
       parentRoute: typeof AppRoute
     }
     '/_app/dashboard': {
@@ -186,6 +205,7 @@ declare module '@tanstack/react-router' {
 
 interface AppRouteChildren {
   AppCertificationsRoute: typeof AppCertificationsRoute
+  AppCurriculumRoute: typeof AppCurriculumRoute
   AppDashboardRoute: typeof AppDashboardRoute
   AppLeaderboardRoute: typeof AppLeaderboardRoute
   AppMarketRoute: typeof AppMarketRoute
@@ -195,6 +215,7 @@ interface AppRouteChildren {
 
 const AppRouteChildren: AppRouteChildren = {
   AppCertificationsRoute: AppCertificationsRoute,
+  AppCurriculumRoute: AppCurriculumRoute,
   AppDashboardRoute: AppDashboardRoute,
   AppLeaderboardRoute: AppLeaderboardRoute,
   AppMarketRoute: AppMarketRoute,
