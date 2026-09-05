@@ -128,7 +128,7 @@ function MarketPage() {
                 </span>
                 <span>{c.weeks} weeks</span>
               </div>
-              <p className="mt-3 inline-block rounded-full bg-lime/20 px-2.5 py-1 text-[11px] font-bold text-lime-foreground">
+              <p className="mt-3 inline-block rounded-full bg-primary/12 px-2.5 py-1 text-[11px] font-bold text-primary">
                 Builds your {c.closesGap}
               </p>
             </motion.article>
