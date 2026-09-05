@@ -79,17 +79,17 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "SkillForge — Career Readiness LMS for Students" },
+      { title: "PathPilot — Career Guidance for Students" },
       {
         name: "description",
         content:
-          "Career readiness scores, skill-gap analysis, market pulse and gamified certifications for students.",
+          "Turn what you're learning today into possibilities for tomorrow — readiness, skill gaps and market pulse for students.",
       },
-      { property: "og:title", content: "SkillForge — Career Readiness LMS for Students" },
+      { property: "og:title", content: "PathPilot — Career Guidance for Students" },
       {
         property: "og:description",
         content:
-          "Career readiness scores, skill-gap analysis, market pulse and gamified certifications for students.",
+          "Turn what you're learning today into possibilities for tomorrow — readiness, skill gaps and market pulse for students.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
