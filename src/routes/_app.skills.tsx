@@ -1,6 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { motion } from "motion/react";
-import { toast } from "sonner";
 import {
   PolarAngleAxis,
   PolarGrid,
@@ -9,9 +8,9 @@ import {
   RadarChart,
   ResponsiveContainer,
 } from "recharts";
-import { Briefcase, Copy, MapPin, Wallet } from "lucide-react";
+import { AlertCircle, Wallet } from "lucide-react";
 import { gapsForRole, targetRoles } from "@/data/demo";
-import { roleInternships, roleResume, roleSalaries } from "@/data/career";
+import { roleSalaries, skillWhy } from "@/data/career";
 import { useStudent } from "@/context/StudentContext";
 import { PageHeading } from "@/components/AppShell";
 import { AiPanel } from "@/components/AiPanel";
@@ -19,16 +18,16 @@ import { AiPanel } from "@/components/AiPanel";
 export const Route = createFileRoute("/_app/skills")({
   head: () => ({
     meta: [
-      { title: "Skill Gap Analysis — SkillForge" },
+      { title: "Skill Gap Analysis — PathPilot" },
       {
         name: "description",
         content:
-          "Compare your skills against the role you want, see India and US salary bands, get an AI four-week action path, and find matching internships.",
+          "See your current level against the target for the role you're exploring, which gap matters most and why, plus India and US salary bands.",
       },
-      { property: "og:title", content: "Skill Gap Analysis — SkillForge" },
+      { property: "og:title", content: "Skill Gap Analysis — PathPilot" },
       {
         property: "og:description",
-        content: "Your skills vs role benchmarks, salary bands and internship opportunities.",
+        content: "Current vs target skill levels, gap sizes, priority and why each one matters.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -37,20 +36,26 @@ export const Route = createFileRoute("/_app/skills")({
   component: SkillsPage,
 });
 
+function priorityOf(gap: number, required: number) {
+  const weight = gap * (required / 100);
+  if (weight >= 25) return { label: "High", tone: "bg-primary text-primary-foreground" };
+  if (weight >= 10) return { label: "Medium", tone: "bg-primary/15 text-primary" };
+  return { label: "Low", tone: "bg-muted text-muted-foreground" };
+}
+
 function SkillsPage() {
   const { roleId, setRoleId, role } = useStudent();
-  const gaps = gapsForRole(roleId);
+  const gaps = gapsForRole(roleId ?? targetRoles[0]!.id);
   const radarData = gaps.map((g) => ({ skill: g.name, you: g.level, role: g.required }));
-  const salaries = roleSalaries[roleId] ?? [];
-  const internships = roleInternships[roleId] ?? [];
-  const resume = roleResume[roleId] ?? "";
+  const salaries = roleSalaries[role.id] ?? [];
+  const top = gaps[0]!;
 
   return (
     <div className="space-y-6">
       <PageHeading
         eyebrow="Skill gap analysis"
-        title="How close are you, really?"
-        blurb="Pick the role you're chasing. We'll show how your skills line up, what it pays, and what to do next."
+        title="Where is the gap?"
+        blurb="Based on where you want to go, PathPilot continuously shows you what you're missing and what you should do next."
       />
 
       <div className="flex flex-wrap gap-2.5">
@@ -60,102 +65,145 @@ function SkillsPage() {
             whileTap={{ scale: 0.96 }}
             onClick={() => setRoleId(r.id)}
             className={`rounded-2xl px-4 py-2.5 text-sm font-bold transition-all ${
-              r.id === roleId
+              r.id === role.id
                 ? "gradient-brand text-primary-foreground shadow-pop"
                 : "bg-card text-muted-foreground shadow-pop hover:text-foreground"
             }`}
           >
-            {r.emoji} {r.title}
+            {r.title}
           </motion.button>
         ))}
       </div>
 
-      <div className="grid gap-5 xl:grid-cols-[1fr_1.15fr]">
-        <div className="space-y-5">
-          <motion.section
-            initial={{ opacity: 0, y: 14 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="card-pop p-6"
-          >
-            <h2 className="text-xl font-bold">You vs {role.title}</h2>
-            <p className="text-sm text-muted-foreground">{role.blurb}</p>
-            <div className="mt-2 h-[320px]">
-              <ResponsiveContainer width="100%" height="100%">
-                <RadarChart data={radarData} outerRadius="72%">
-                  <PolarGrid stroke="var(--border)" />
-                  <PolarAngleAxis
-                    dataKey="skill"
-                    tick={{ fill: "var(--muted-foreground)", fontSize: 11 }}
-                  />
-                  <PolarRadiusAxis domain={[0, 100]} tick={false} axisLine={false} />
-                  <Radar
-                    name="Role needs"
-                    dataKey="role"
-                    stroke="var(--chart-3)"
-                    fill="var(--chart-3)"
-                    fillOpacity={0.18}
-                  />
-                  <Radar
-                    name="You"
-                    dataKey="you"
-                    stroke="var(--chart-1)"
-                    fill="var(--chart-1)"
-                    fillOpacity={0.35}
-                  />
-                </RadarChart>
-              </ResponsiveContainer>
-            </div>
-            <div className="flex justify-center gap-5 text-xs font-bold">
-              <span className="flex items-center gap-2">
-                <span className="h-2.5 w-2.5 rounded-full bg-chart-1" /> You
-              </span>
-              <span className="flex items-center gap-2">
-                <span className="h-2.5 w-2.5 rounded-full bg-chart-3" /> Role benchmark
-              </span>
-            </div>
-          </motion.section>
-
-          <motion.section
-            initial={{ opacity: 0, y: 14 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.06 }}
-            className="card-pop p-6"
-          >
-            <h2 className="flex items-center gap-2 text-xl font-bold">
-              <Wallet className="h-5 w-5 text-primary" /> What {role.title} pays
-            </h2>
-            <p className="text-sm text-muted-foreground">Typical 2026 bands, before bonuses.</p>
-            <div className="mt-4 grid gap-3 sm:grid-cols-2">
-              {salaries.map((s) => (
-                <div key={s.region} className="rounded-2xl bg-muted p-4">
-                  <p className="text-sm font-bold">
-                    {s.flag} {s.region}
-                  </p>
-                  <div className="mt-3 space-y-2">
-                    <div>
-                      <p className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground">
-                        Fresher
-                      </p>
-                      <p className="font-display text-lg font-bold text-primary">{s.fresher}</p>
-                    </div>
-                    <div>
-                      <p className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground">
-                        3–5 years
-                      </p>
-                      <p className="font-display text-lg font-bold">{s.mid}</p>
-                    </div>
-                  </div>
-                  <p className="mt-2 text-xs leading-relaxed text-muted-foreground">{s.note}</p>
-                </div>
-              ))}
-            </div>
-          </motion.section>
+      <motion.section
+        initial={{ opacity: 0, y: 14 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="card-pop p-6"
+      >
+        <p className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-primary">
+          <AlertCircle className="h-4 w-4" /> Your highest-priority gap
+        </p>
+        <h2 className="mt-1.5 text-2xl font-bold">{top.name}</h2>
+        <div className="mt-4 grid gap-4 md:grid-cols-2">
+          <div className="rounded-2xl bg-muted p-4">
+            <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
+              Here's why
+            </p>
+            <p className="mt-1.5 text-sm leading-relaxed text-foreground/85">
+              {role.title} roles expect about {top.required} out of 100 here and you're at{" "}
+              {top.level} — a {top.gap}-point gap, the widest of any skill on your profile.{" "}
+              {skillWhy[top.name]}
+            </p>
+          </div>
+          <div className="rounded-2xl bg-muted p-4">
+            <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
+              Here's what you can do about it
+            </p>
+            <ul className="mt-1.5 space-y-1.5 text-sm leading-relaxed text-foreground/85">
+              <li>· Spend 25 focused minutes a day on {top.name} for the next two weeks.</li>
+              <li>· Use it once in a small piece of real work you can show someone.</li>
+              <li>· Write two lines about it for your resume while it's fresh.</li>
+            </ul>
+          </div>
         </div>
+      </motion.section>
+
+      <motion.section
+        initial={{ opacity: 0, y: 14 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="card-pop overflow-hidden p-6"
+      >
+        <h2 className="text-xl font-bold">Your skills vs {role.title}</h2>
+        <p className="text-sm text-muted-foreground">
+          Current level, the target for this role, the gap between them, and why it matters.
+        </p>
+        <div className="mt-4 overflow-x-auto">
+          <table className="w-full min-w-[640px] border-collapse text-left text-sm">
+            <thead>
+              <tr className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
+                <th className="pb-2 pr-4">Skill</th>
+                <th className="pb-2 pr-4">Current</th>
+                <th className="pb-2 pr-4">Target</th>
+                <th className="pb-2 pr-4">Gap</th>
+                <th className="pb-2 pr-4">Priority</th>
+                <th className="pb-2">Why this matters</th>
+              </tr>
+            </thead>
+            <tbody>
+              {gaps.map((g) => {
+                const p = priorityOf(g.gap, g.required);
+                return (
+                  <tr key={g.name} className="border-t border-border align-top">
+                    <td className="py-3 pr-4 font-bold">{g.name}</td>
+                    <td className="py-3 pr-4">{g.level}</td>
+                    <td className="py-3 pr-4 text-muted-foreground">{g.required}</td>
+                    <td className="py-3 pr-4 font-bold text-primary">
+                      {g.gap > 0 ? `+${g.gap}` : "—"}
+                    </td>
+                    <td className="py-3 pr-4">
+                      <span className={`rounded-full px-2.5 py-1 text-xs font-bold ${p.tone}`}>
+                        {p.label}
+                      </span>
+                    </td>
+                    <td className="py-3 text-xs leading-relaxed text-muted-foreground">
+                      {skillWhy[g.name]}
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+      </motion.section>
+
+      <div className="grid gap-5 xl:grid-cols-[1fr_1.1fr]">
+        <motion.section
+          initial={{ opacity: 0, y: 14 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="card-pop p-6"
+        >
+          <h2 className="text-xl font-bold">The same picture, at a glance</h2>
+          <p className="text-sm text-muted-foreground">{role.blurb}</p>
+          <div className="mt-2 h-[300px]">
+            <ResponsiveContainer width="100%" height="100%">
+              <RadarChart data={radarData} outerRadius="72%">
+                <PolarGrid stroke="var(--border)" />
+                <PolarAngleAxis
+                  dataKey="skill"
+                  tick={{ fill: "var(--muted-foreground)", fontSize: 11 }}
+                />
+                <PolarRadiusAxis domain={[0, 100]} tick={false} axisLine={false} />
+                <Radar
+                  name="Target"
+                  dataKey="role"
+                  stroke="var(--chart-3)"
+                  fill="var(--chart-3)"
+                  fillOpacity={0.18}
+                />
+                <Radar
+                  name="You"
+                  dataKey="you"
+                  stroke="var(--chart-1)"
+                  fill="var(--chart-1)"
+                  fillOpacity={0.35}
+                />
+              </RadarChart>
+            </ResponsiveContainer>
+          </div>
+          <div className="flex justify-center gap-5 text-xs font-bold">
+            <span className="flex items-center gap-2">
+              <span className="h-2.5 w-2.5 rounded-full bg-chart-1" /> You
+            </span>
+            <span className="flex items-center gap-2">
+              <span className="h-2.5 w-2.5 rounded-full bg-chart-3" /> Role target
+            </span>
+          </div>
+        </motion.section>
 
         <AiPanel
           kind="gap"
           role={role.title}
-          title="Your gap coaching brief"
+          title="What to do next"
           skills={gaps.map((g) => ({ name: g.name, level: g.level, required: g.required }))}
         />
       </div>
@@ -163,60 +211,33 @@ function SkillsPage() {
       <motion.section
         initial={{ opacity: 0, y: 14 }}
         animate={{ opacity: 1, y: 0 }}
-        className="space-y-4"
+        className="card-pop p-6"
       >
-        <div>
-          <h2 className="flex items-center gap-2 text-xl font-bold">
-            <Briefcase className="h-5 w-5 text-primary" /> Career opportunities
-          </h2>
-          <p className="text-sm text-muted-foreground">
-            Internships that match what you're studying right now.
-          </p>
-        </div>
-
-        <div className="grid gap-4 md:grid-cols-3">
-          {internships.map((i) => (
-            <motion.article key={i.title} whileHover={{ y: -4 }} className="card-pop flex flex-col p-5">
-              <h3 className="text-base font-bold">{i.title}</h3>
-              <p className="text-xs font-semibold text-muted-foreground">{i.org}</p>
-              <p className="mt-2 flex items-center gap-1.5 text-xs text-muted-foreground">
-                <MapPin className="h-3.5 w-3.5" /> {i.mode}
-              </p>
-              <p className="mt-3 flex-1 text-xs leading-relaxed text-foreground/80">
-                {i.fitsBecause}
-              </p>
-              <div className="mt-3 flex flex-wrap items-center gap-2 text-[11px] font-bold">
-                <span className="rounded-full bg-lime/25 px-2.5 py-1 text-lime-foreground">
-                  {i.stipend}
-                </span>
-                <span className="text-muted-foreground">{i.window}</span>
+        <h2 className="flex items-center gap-2 text-xl font-bold">
+          <Wallet className="h-5 w-5 text-primary" /> What {role.title} pays
+        </h2>
+        <p className="text-sm text-muted-foreground">Typical 2026 bands, before bonuses.</p>
+        <div className="mt-4 grid gap-3 sm:grid-cols-2">
+          {salaries.map((s) => (
+            <div key={s.region} className="rounded-2xl bg-muted p-4">
+              <p className="text-sm font-bold">{s.region}</p>
+              <div className="mt-3 grid grid-cols-2 gap-3">
+                <div>
+                  <p className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground">
+                    Fresher
+                  </p>
+                  <p className="font-display text-lg font-bold text-primary">{s.fresher}</p>
+                </div>
+                <div>
+                  <p className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground">
+                    3–5 years
+                  </p>
+                  <p className="font-display text-lg font-bold">{s.mid}</p>
+                </div>
               </div>
-            </motion.article>
-          ))}
-        </div>
-
-        <div className="card-pop p-6">
-          <div className="flex flex-wrap items-start justify-between gap-3">
-            <div>
-              <h3 className="text-lg font-bold">Add this to your resume</h3>
-              <p className="text-sm text-muted-foreground">
-                Written from the courses you're taking — paste it under your summary and edit a
-                line or two.
-              </p>
+              <p className="mt-2 text-xs leading-relaxed text-muted-foreground">{s.note}</p>
             </div>
-            <button
-              onClick={() => {
-                navigator.clipboard?.writeText(resume);
-                toast.success("Resume paragraph copied 📋");
-              }}
-              className="flex items-center gap-2 rounded-2xl bg-primary/10 px-3.5 py-2 text-xs font-bold text-primary transition-colors hover:bg-primary/20"
-            >
-              <Copy className="h-4 w-4" /> Copy
-            </button>
-          </div>
-          <p className="mt-4 rounded-2xl bg-muted p-4 text-sm leading-relaxed text-foreground/85">
-            {resume}
-          </p>
+          ))}
         </div>
       </motion.section>
     </div>
