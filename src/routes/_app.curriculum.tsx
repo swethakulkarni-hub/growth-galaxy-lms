@@ -1,22 +1,25 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { motion } from "motion/react";
-import { ArrowUpRight, BookOpen, Headphones } from "lucide-react";
-import { books, curriculum, podcasts } from "@/data/career";
+import { toast } from "sonner";
+import { ArrowUpRight, BookOpen, Briefcase, Copy, Headphones, MapPin, TrendingUp } from "lucide-react";
+import { books, curriculum, podcasts, roleInternships, roleResume } from "@/data/career";
+import { trendingSkills } from "@/data/demo";
+import { useStudent } from "@/context/StudentContext";
 import { PageHeading } from "@/components/AppShell";
 
 export const Route = createFileRoute("/_app/curriculum")({
   head: () => ({
     meta: [
-      { title: "My Curriculum — Grades, Next Steps & References | SkillForge" },
+      { title: "My Curriculum — Subjects, Next Steps & Internships | PathPilot" },
       {
         name: "description",
         content:
-          "Every school course you've completed with grades, one recommended next step per subject, plus books and podcasts for the subjects you're learning.",
+          "Your school subjects and grades, how to go deeper with books and podcasts, and the internships and market demand that match what you're studying.",
       },
-      { property: "og:title", content: "My Curriculum — Grades & Next Steps" },
+      { property: "og:title", content: "My Curriculum — Subjects, Next Steps & Internships" },
       {
         property: "og:description",
-        content: "School grades, one step further per subject, and curated books and podcasts.",
+        content: "Grades, deeper reading and listening, plus internships matched to your subjects.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -26,22 +29,28 @@ export const Route = createFileRoute("/_app/curriculum")({
 });
 
 function gradeTone(gpa: number) {
-  if (gpa >= 9) return "bg-lime/25 text-lime-foreground";
-  if (gpa >= 8) return "bg-sky/20 text-sky-foreground";
-  return "bg-sun/25 text-sun-foreground";
+  if (gpa >= 9) return "bg-primary text-primary-foreground";
+  if (gpa >= 8) return "bg-primary/15 text-primary";
+  return "bg-muted text-muted-foreground";
 }
 
 function CurriculumPage() {
+  const { role } = useStudent();
   const all = curriculum.flatMap((s) => s.courses);
-  const cgpa = (all.reduce((a, c) => a + c.gpa * c.credits, 0) / all.reduce((a, c) => a + c.credits, 0)).toFixed(2);
+  const cgpa = (
+    all.reduce((a, c) => a + c.gpa * c.credits, 0) / all.reduce((a, c) => a + c.credits, 0)
+  ).toFixed(2);
   const credits = all.reduce((a, c) => a + c.credits, 0);
+  const internships = roleInternships[role.id] ?? [];
+  const resume = roleResume[role.id] ?? "";
+  const rising = trendingSkills.filter((s) => s.state === "rising").slice(0, 4);
 
   return (
     <div className="space-y-6">
       <PageHeading
         eyebrow="My curriculum"
-        title="What school covered — and one step further"
-        blurb="Your completed subjects and grades, with a single recommended next step for each so your coursework turns into something employers recognise."
+        title="What school covered — and how to go further"
+        blurb="Your subjects and grades, one recommended next step for each, deeper reading and listening, and where the market is asking for these skills right now."
       />
 
       <div className="grid gap-4 sm:grid-cols-3">
@@ -71,7 +80,7 @@ function CurriculumPage() {
           <div className="flex flex-wrap items-center justify-between gap-2">
             <h2 className="text-xl font-bold">{sem.label}</h2>
             <span className="rounded-full bg-primary/12 px-3 py-1 text-xs font-bold text-primary">
-              GPA {sem.gpa}
+              Semester GPA {sem.gpa}
             </span>
           </div>
 
@@ -80,12 +89,14 @@ function CurriculumPage() {
               <div key={c.code} className="rounded-2xl bg-muted p-4">
                 <div className="flex flex-wrap items-center justify-between gap-2">
                   <p className="text-sm font-bold">
-                    {c.emoji} {c.title}
+                    {c.title}
                     <span className="ml-2 text-xs font-semibold text-muted-foreground">
                       {c.code} · {c.credits} credits
                     </span>
                   </p>
-                  <span className={`rounded-full px-2.5 py-1 text-xs font-bold ${gradeTone(c.gpa)}`}>
+                  <span
+                    className={`rounded-full px-2.5 py-1 text-xs font-bold ${gradeTone(c.gpa)}`}
+                  >
                     Grade {c.grade}
                   </span>
                 </div>
@@ -118,8 +129,7 @@ function CurriculumPage() {
                 whileHover={{ y: -4 }}
                 className="card-pop flex flex-col p-5"
               >
-                <span className="text-2xl">{r.emoji}</span>
-                <h3 className="mt-2 text-base font-bold">{r.title}</h3>
+                <h3 className="text-base font-bold">{r.title}</h3>
                 <p className="text-xs font-semibold text-muted-foreground">{r.author}</p>
                 <p className="mt-2 flex-1 text-xs leading-relaxed text-foreground/80">{r.why}</p>
                 <div className="mt-3 flex flex-wrap items-center gap-2 text-[11px] font-bold">
@@ -133,6 +143,84 @@ function CurriculumPage() {
           </div>
         </section>
       ))}
+
+      <section className="card-pop p-6">
+        <h2 className="flex items-center gap-2 text-xl font-bold">
+          <TrendingUp className="h-5 w-5 text-primary" /> Market pulse for these subjects
+        </h2>
+        <p className="text-sm text-muted-foreground">
+          Where demand is growing for the skills your coursework is building.
+        </p>
+        <div className="mt-4 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+          {rising.map((s) => (
+            <div key={s.name} className="rounded-2xl bg-muted p-4">
+              <p className="text-sm font-bold">{s.name}</p>
+              <p className="font-display text-2xl font-bold text-primary">+{s.growth}%</p>
+              <p className="mt-1 text-xs leading-relaxed text-muted-foreground">{s.note}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section className="space-y-4">
+        <div>
+          <h2 className="flex items-center gap-2 text-xl font-bold">
+            <Briefcase className="h-5 w-5 text-primary" /> Internships that match your subjects
+          </h2>
+          <p className="text-sm text-muted-foreground">
+            Openings relevant to the {role.title} track you're exploring.
+          </p>
+        </div>
+
+        <div className="grid gap-4 md:grid-cols-3">
+          {internships.map((i) => (
+            <motion.article
+              key={i.title}
+              whileHover={{ y: -4 }}
+              className="card-pop flex flex-col p-5"
+            >
+              <h3 className="text-base font-bold">{i.title}</h3>
+              <p className="text-xs font-semibold text-muted-foreground">{i.org}</p>
+              <p className="mt-2 flex items-center gap-1.5 text-xs text-muted-foreground">
+                <MapPin className="h-3.5 w-3.5" /> {i.mode}
+              </p>
+              <p className="mt-3 flex-1 text-xs leading-relaxed text-foreground/80">
+                {i.fitsBecause}
+              </p>
+              <div className="mt-3 flex flex-wrap items-center gap-2 text-[11px] font-bold">
+                <span className="rounded-full bg-primary/12 px-2.5 py-1 text-primary">
+                  {i.stipend}
+                </span>
+                <span className="text-muted-foreground">{i.window}</span>
+              </div>
+            </motion.article>
+          ))}
+        </div>
+
+        <div className="card-pop p-6">
+          <div className="flex flex-wrap items-start justify-between gap-3">
+            <div>
+              <h3 className="text-lg font-bold">Add this to your resume</h3>
+              <p className="text-sm text-muted-foreground">
+                Written from the subjects and courses you're doing — paste it under your summary and
+                edit a line or two.
+              </p>
+            </div>
+            <button
+              onClick={() => {
+                navigator.clipboard?.writeText(resume);
+                toast.success("Resume paragraph copied");
+              }}
+              className="flex items-center gap-2 rounded-2xl bg-primary/10 px-3.5 py-2 text-xs font-bold text-primary transition-colors hover:bg-primary/20"
+            >
+              <Copy className="h-4 w-4" /> Copy
+            </button>
+          </div>
+          <p className="mt-4 rounded-2xl bg-muted p-4 text-sm leading-relaxed text-foreground/85">
+            {resume}
+          </p>
+        </div>
+      </section>
     </div>
   );
 }

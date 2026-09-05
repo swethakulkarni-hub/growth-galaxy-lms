@@ -10,7 +10,7 @@ import { Sparkline } from "@/components/CountUp";
 export const Route = createFileRoute("/_app/market")({
   head: () => ({
     meta: [
-      { title: "Market Pulse — Trending Skills & Courses | SkillForge" },
+      { title: "Market Pulse — Trending Skills & Courses | PathPilot" },
       {
         name: "description",
         content:
@@ -30,7 +30,7 @@ function MarketPage() {
   const { role, roleId } = useStudent();
   const rising = trendingSkills.filter((s) => s.state === "rising");
   const cooling = trendingSkills.filter((s) => s.state === "cooling");
-  const gaps = gapsForRole(roleId);
+  const gaps = gapsForRole(roleId ?? role.id);
 
   return (
     <div className="space-y-5">
@@ -49,8 +49,8 @@ function MarketPage() {
 
       <div className="grid gap-5 lg:grid-cols-2">
         {[
-          { title: "🚀 Heating up", items: rising, up: true },
-          { title: "🧊 Cooling down", items: cooling, up: false },
+          { title: "Heating up", items: rising, up: true },
+          { title: "Cooling down", items: cooling, up: false },
         ].map((group) => (
           <motion.section
             key={group.title}
@@ -69,7 +69,7 @@ function MarketPage() {
                     </div>
                     <span
                       className={`flex shrink-0 items-center gap-1 rounded-full px-2.5 py-1 text-xs font-bold ${
-                        group.up ? "bg-lime/25 text-lime-foreground" : "bg-coral/15 text-coral"
+                        group.up ? "bg-primary/15 text-primary" : "bg-coral/15 text-coral"
                       }`}
                     >
                       {group.up ? (
@@ -83,13 +83,13 @@ function MarketPage() {
                   </div>
                   <Sparkline
                     data={s.trend}
-                    className={group.up ? "stroke-lime" : "stroke-coral"}
+                    className={group.up ? "stroke-primary" : "stroke-coral"}
                   />
                   <div className="mt-1 flex items-center gap-2 text-[11px] font-bold text-muted-foreground">
                     <span>Demand index</span>
                     <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-background">
                       <div
-                        className={`h-full rounded-full ${group.up ? "bg-lime" : "bg-coral"}`}
+                        className={`h-full rounded-full ${group.up ? "bg-primary" : "bg-coral"}`}
                         style={{ width: `${s.demand}%` }}
                       />
                     </div>
@@ -128,8 +128,8 @@ function MarketPage() {
                 </span>
                 <span>{c.weeks} weeks</span>
               </div>
-              <p className="mt-3 inline-block rounded-full bg-lime/20 px-2.5 py-1 text-[11px] font-bold text-lime-foreground">
-                Closes your {c.closesGap} gap
+              <p className="mt-3 inline-block rounded-full bg-primary/12 px-2.5 py-1 text-[11px] font-bold text-primary">
+                Builds your {c.closesGap}
               </p>
             </motion.article>
           ))}

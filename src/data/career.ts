@@ -457,3 +457,17 @@ export const podcasts: Reference[] = [
     length: "~35 min episodes",
   },
 ];
+
+// Why each skill matters to an employer, in plain language.
+export const skillWhy: Record<string, string> = {
+  Python: "Almost every analysis, automation or model you'll be asked to build starts here.",
+  SQL: "It's the first live test in most analytics interviews — you either get the data out or you don't.",
+  "Data Viz": "A correct answer nobody understands doesn't get used. This is how your work travels.",
+  React: "The fastest way to show your work as something people can click instead of a screenshot.",
+  "Cloud Basics": "Teams expect you to run your work somewhere other than your own laptop.",
+  "Machine Learning": "Signals you can go beyond describing the past to predicting what's next.",
+  "Product Thinking": "Decides whether you're handed instructions or handed problems.",
+  Presenting: "The skill that turns good work into a job offer and, later, into influence.",
+  "UX Basics": "Helps you build things people can actually use without being told how.",
+  "Stakeholder Comms": "Most junior work fails on alignment, not on technique.",
+};
