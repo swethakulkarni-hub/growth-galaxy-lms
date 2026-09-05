@@ -22,21 +22,12 @@ export const student = {
   program: "B.S. Computer Science",
   cohort: "CS '28 — Cohort B",
   initials: "DN",
-  level: 7,
-  levelTitle: "Skill Voyager",
-  xp: 4820,
-  xpIntoLevel: 620,
-  xpForNextLevel: 1000,
-  weeklyGoalXp: 900,
-  weeklyXp: 685,
-  streak: 12,
-  bestStreak: 21,
   readiness: 72,
   subScores: [
-    { label: "Technical", value: 78, emoji: "⚙️" },
-    { label: "Projects", value: 64, emoji: "🚀" },
-    { label: "Communication", value: 81, emoji: "🎤" },
-    { label: "Market Fit", value: 66, emoji: "📈" },
+    { label: "Technical", value: 78 },
+    { label: "Projects", value: 64 },
+    { label: "Communication", value: 81 },
+    { label: "Market fit", value: 66 },
   ],
 };
 
@@ -184,60 +175,6 @@ export const myCourses: Course[] = [
   },
 ];
 
-export type Quest = {
-  id: string;
-  title: string;
-  detail: string;
-  xp: number;
-  progress: number;
-  target: number;
-  emoji: string;
-  endsIn: string;
-};
-
-export const quests: Quest[] = [
-  {
-    id: "q1",
-    title: "Finish 2 lessons",
-    detail: "Any course counts. Momentum > perfection.",
-    xp: 150,
-    progress: 2,
-    target: 2,
-    emoji: "⚡",
-    endsIn: "2 days",
-  },
-  {
-    id: "q2",
-    title: "Close one skill gap",
-    detail: "Push SQL from 61 to 70 with the practice set.",
-    xp: 300,
-    progress: 1,
-    target: 3,
-    emoji: "🎯",
-    endsIn: "4 days",
-  },
-  {
-    id: "q3",
-    title: "Present a project recap",
-    detail: "Record a 3-minute demo of your dashboard build.",
-    xp: 220,
-    progress: 0,
-    target: 1,
-    emoji: "🎤",
-    endsIn: "6 days",
-  },
-  {
-    id: "q4",
-    title: "Keep the streak alive",
-    detail: "5 days in a row of any learning activity.",
-    xp: 180,
-    progress: 5,
-    target: 5,
-    emoji: "🔥",
-    endsIn: "today",
-  },
-];
-
 export type TrendingSkill = {
   name: string;
   growth: number;
@@ -350,110 +287,6 @@ export const trendingCourses: TrendingCourse[] = [
     closesGap: "Cloud Basics",
     weeks: 6,
   },
-];
-
-export type CertStage = {
-  name: string;
-  status: "done" | "current" | "locked";
-  kind: "lesson" | "lab" | "boss";
-};
-
-export type CertTrack = {
-  id: string;
-  title: string;
-  emoji: string;
-  xp: number;
-  marketValue: string;
-  badge: string;
-  accent: string;
-  stages: CertStage[];
-};
-
-export const certTracks: CertTrack[] = [
-  {
-    id: "sql-master",
-    title: "SQL Analytics Certified",
-    emoji: "🗄️",
-    xp: 1200,
-    marketValue: "Named in 68% of analyst postings",
-    badge: "Query Slayer",
-    accent: "violet",
-    stages: [
-      { name: "Joins & Aggregates", status: "done", kind: "lesson" },
-      { name: "Window Functions", status: "done", kind: "lesson" },
-      { name: "Query Tuning Lab", status: "current", kind: "lab" },
-      { name: "Modeling Sprint", status: "locked", kind: "lesson" },
-      { name: "Boss Challenge", status: "locked", kind: "boss" },
-    ],
-  },
-  {
-    id: "viz-pro",
-    title: "Data Storyteller",
-    emoji: "📈",
-    xp: 900,
-    marketValue: "Top asked-for skill in analyst interviews",
-    badge: "Chart Whisperer",
-    accent: "lime",
-    stages: [
-      { name: "Chart Choice", status: "done", kind: "lesson" },
-      { name: "Narrative Lab", status: "current", kind: "lab" },
-      { name: "Exec Summary", status: "locked", kind: "lesson" },
-      { name: "Boss Challenge", status: "locked", kind: "boss" },
-    ],
-  },
-  {
-    id: "cloud-ready",
-    title: "Cloud Ready Engineer",
-    emoji: "☁️",
-    xp: 1500,
-    marketValue: "+14% average starting offer",
-    badge: "Sky Runner",
-    accent: "orange",
-    stages: [
-      { name: "Core Services", status: "current", kind: "lesson" },
-      { name: "Containers Lab", status: "locked", kind: "lab" },
-      { name: "CI/CD Pipeline", status: "locked", kind: "lesson" },
-      { name: "Cost & Scale", status: "locked", kind: "lesson" },
-      { name: "Boss Challenge", status: "locked", kind: "boss" },
-    ],
-  },
-];
-
-export const earnedBadges = [
-  { name: "Inorganic Chemistry", emoji: "🧪", date: "Mar 2026", tier: "Gold" },
-  { name: "Social Philosophy", emoji: "🏛️", date: "Feb 2026", tier: "Silver" },
-  { name: "Python Foundations", emoji: "🐍", date: "Jan 2026", tier: "Gold" },
-  { name: "Presenting with Impact", emoji: "🎤", date: "Dec 2025", tier: "Gold" },
-  { name: "First 7-Day Streak", emoji: "🔥", date: "Nov 2025", tier: "Bronze" },
-  { name: "Peer Reviewer", emoji: "🤝", date: "Nov 2025", tier: "Silver" },
-];
-
-export const leaderboard = [
-  { rank: 1, name: "Marcus Lee", xp: 7420, streak: 34, badges: 11, initials: "ML" },
-  { rank: 2, name: "Priya Raman", xp: 6180, streak: 22, badges: 9, initials: "PR" },
-  { rank: 3, name: "Diane Nguyen", xp: 4820, streak: 12, badges: 6, initials: "DN", isYou: true },
-  { rank: 4, name: "Tomas Alvarez", xp: 4610, streak: 15, badges: 6, initials: "TA" },
-  { rank: 5, name: "Ines Duarte", xp: 4270, streak: 9, badges: 5, initials: "ID" },
-  { rank: 6, name: "Kwame Boateng", xp: 3980, streak: 18, badges: 5, initials: "KB" },
-  { rank: 7, name: "Sofia Ricci", xp: 3540, streak: 6, badges: 4, initials: "SR" },
-  { rank: 8, name: "Hana Sato", xp: 3110, streak: 11, badges: 4, initials: "HS" },
-];
-
-export const weeklyLeaderboard = [
-  { rank: 1, name: "Diane Nguyen", xp: 685, streak: 12, badges: 2, initials: "DN", isYou: true },
-  { rank: 2, name: "Priya Raman", xp: 640, streak: 22, badges: 1, initials: "PR" },
-  { rank: 3, name: "Kwame Boateng", xp: 590, streak: 18, badges: 1, initials: "KB" },
-  { rank: 4, name: "Marcus Lee", xp: 520, streak: 34, badges: 1, initials: "ML" },
-  { rank: 5, name: "Hana Sato", xp: 480, streak: 11, badges: 0, initials: "HS" },
-  { rank: 6, name: "Tomas Alvarez", xp: 410, streak: 15, badges: 0, initials: "TA" },
-  { rank: 7, name: "Ines Duarte", xp: 360, streak: 9, badges: 0, initials: "ID" },
-  { rank: 8, name: "Sofia Ricci", xp: 300, streak: 6, badges: 0, initials: "SR" },
-];
-
-// Last 12 weeks of activity intensity, 0-4
-export const streakHeatmap = [
-  2, 3, 1, 0, 4, 3, 2, 1, 3, 4, 4, 2, 0, 1, 3, 4, 2, 2, 3, 1, 0, 2, 4, 3, 3, 2, 1, 4, 4, 3, 2, 0,
-  1, 3, 4, 4, 2, 3, 3, 4, 1, 0, 2, 4, 3, 4, 4, 2, 3, 3, 4, 4, 2, 1, 3, 4,
 ];
 
 export function gapsForRole(roleId: string) {
