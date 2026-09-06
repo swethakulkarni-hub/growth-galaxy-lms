@@ -1,8 +1,11 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { motion } from "motion/react";
 import { useState } from "react";
-import { Compass, LineChart, Sparkles, Target } from "lucide-react";
+import { Compass, Sparkles } from "lucide-react";
 import { useStudent } from "@/context/StudentContext";
+import student1 from "@/assets/student-1.jpg";
+import student2 from "@/assets/student-2.jpg";
+import student3 from "@/assets/student-3.jpg";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -25,12 +28,22 @@ export const Route = createFileRoute("/")({
   component: LoginPage,
 });
 
-const floaters = [
-  { label: "SQL", top: "14%", left: "10%", delay: 0 },
-  { label: "Python", top: "28%", left: "60%", delay: 0.4 },
-  { label: "Data storytelling", top: "50%", left: "12%", delay: 0.8 },
-  { label: "Product thinking", top: "66%", left: "52%", delay: 0.2 },
-  { label: "Cloud basics", top: "82%", left: "22%", delay: 0.6 },
+const pointers = [
+  {
+    photo: student1,
+    hand: "See your path\nto success",
+    text: "A clear picture of where you stand today and where your subjects could take you.",
+  },
+  {
+    photo: student2,
+    hand: "Build skills\nthat matter",
+    text: "Know exactly which skills your target roles ask for, and which one to work on next.",
+  },
+  {
+    photo: student3,
+    hand: "Find the right\nopportunities",
+    text: "Internships, books and podcasts matched to what you're already studying.",
+  },
 ];
 
 function LoginPage() {
@@ -45,59 +58,64 @@ function LoginPage() {
   };
 
   return (
-    <div className="grid min-h-screen lg:grid-cols-[1.05fr_1fr]">
-      <div className="gradient-brand relative hidden overflow-hidden p-10 text-primary-foreground lg:flex lg:flex-col lg:justify-between">
-        {floaters.map((f) => (
-          <motion.span
-            key={f.label}
-            className="absolute rounded-2xl bg-primary-foreground/15 px-4 py-2 text-sm font-bold backdrop-blur-md"
-            style={{ top: f.top, left: f.left }}
-            animate={{ y: [0, -16, 0], rotate: [-2, 3, -2] }}
-            transition={{ duration: 6, repeat: Infinity, delay: f.delay, ease: "easeInOut" }}
-          >
-            {f.label}
-          </motion.span>
-        ))}
+    <div className="relative min-h-screen overflow-hidden bg-background">
+      <div className="blob pointer-events-none absolute -left-24 -top-28 h-80 w-80 bg-primary" />
+      <div className="blob pointer-events-none absolute -bottom-24 right-0 h-96 w-96 bg-primary-glow" />
 
-        <div className="relative flex items-center gap-3">
-          <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-primary-foreground/20">
-            <Compass className="h-6 w-6" />
-          </span>
-          <span className="font-display text-2xl font-bold">PathPilot</span>
-        </div>
-
-        <div className="relative max-w-md">
-          <h1 className="text-5xl font-bold leading-[1.05]">
-            Turn what you're learning today into possibilities for tomorrow.
-          </h1>
-          <p className="mt-4 text-base text-primary-foreground/85">
-            See where you stand right now, which skills the careers you're curious about actually
-            ask for, and the one thing to do next.
-          </p>
-          <div className="mt-8 flex flex-wrap gap-3 text-sm font-semibold">
-            <span className="flex items-center gap-2 rounded-2xl bg-primary-foreground/15 px-4 py-2">
-              <Target className="h-4 w-4" /> Skill gaps, explained
+      <div className="relative mx-auto grid max-w-[1280px] items-center gap-10 px-5 py-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,26rem)] lg:py-16">
+        <div>
+          <div className="flex items-center gap-3">
+            <span className="gradient-brand flex h-11 w-11 items-center justify-center rounded-2xl text-primary-foreground shadow-pop">
+              <Compass className="h-6 w-6" />
             </span>
-            <span className="flex items-center gap-2 rounded-2xl bg-primary-foreground/15 px-4 py-2">
-              <LineChart className="h-4 w-4" /> Market pulse
-            </span>
+            <span className="font-display text-2xl font-bold tracking-tight">PathPilot</span>
           </div>
+
+          <h1 className="mt-7 max-w-xl text-4xl font-bold leading-[1.08] md:text-5xl">
+            Turn what you're learning today into{" "}
+            <span className="text-gradient-brand">possibilities for tomorrow.</span>
+          </h1>
+          <p className="mt-4 max-w-xl text-base text-muted-foreground">
+            PathPilot reads your curriculum, your grades and the market, then tells you plainly
+            where you stand and what to do next.
+          </p>
+
+          <ul className="mt-9 space-y-6">
+            {pointers.map((p, i) => (
+              <motion.li
+                key={p.hand}
+                initial={{ opacity: 0, x: -18 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.15 + i * 0.12, duration: 0.45 }}
+                className="grid grid-cols-[auto_minmax(0,1fr)] items-center gap-4 sm:gap-5"
+              >
+                <span className="relative shrink-0">
+                  <span className="gradient-brand absolute -inset-1 rounded-full opacity-30 blur-[6px]" />
+                  <img
+                    src={p.photo}
+                    alt=""
+                    loading="lazy"
+                    width={512}
+                    height={512}
+                    className="relative h-20 w-20 rounded-full object-cover ring-4 ring-card sm:h-24 sm:w-24"
+                  />
+                </span>
+                <div className="min-w-0">
+                  <p className="whitespace-pre-line font-hand text-2xl font-bold leading-tight text-primary sm:text-3xl">
+                    {p.hand}
+                  </p>
+                  <p className="mt-1 text-sm text-muted-foreground">{p.text}</p>
+                </div>
+              </motion.li>
+            ))}
+          </ul>
         </div>
-
-        <p className="relative text-xs text-primary-foreground/70">
-          Ace Academy · Career Services · Demo experience
-        </p>
-      </div>
-
-      <div className="relative flex items-center justify-center overflow-hidden bg-background p-6">
-        <div className="blob pointer-events-none absolute -right-20 top-10 h-64 w-64 bg-primary-glow" />
-        <div className="blob pointer-events-none absolute bottom-0 left-0 h-64 w-64 bg-primary" />
 
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="card-pop relative w-full max-w-md p-7"
+          className="card-pop relative w-full p-7"
         >
           <span className="inline-flex items-center gap-2 rounded-full bg-primary/12 px-3 py-1 text-xs font-bold text-primary">
             <Sparkles className="h-3.5 w-3.5" /> Demo mode
@@ -146,6 +164,10 @@ function LoginPage() {
               Continue as Diane →
             </motion.button>
           </form>
+
+          <p className="mt-5 text-xs text-muted-foreground">
+            Ace Academy · Career Services · Demo experience
+          </p>
         </motion.div>
       </div>
     </div>
