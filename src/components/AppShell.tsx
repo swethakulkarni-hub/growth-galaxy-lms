@@ -1,13 +1,5 @@
 import { Link, useRouterState } from "@tanstack/react-router";
-import {
-  LayoutDashboard,
-  Target,
-  TrendingUp,
-  LogOut,
-  Search,
-  Compass,
-  BookOpen,
-} from "lucide-react";
+import { LayoutDashboard, Target, TrendingUp, Compass, BookOpen, LogOut } from "lucide-react";
 import { motion } from "motion/react";
 import type { ReactNode } from "react";
 import { useStudent } from "@/context/StudentContext";
@@ -28,111 +20,110 @@ export function AppShell({ children }: { children: ReactNode }) {
       <div className="blob pointer-events-none absolute -left-32 -top-24 h-72 w-72 bg-primary" />
       <div className="blob pointer-events-none absolute right-0 top-40 h-80 w-80 bg-primary-glow" />
 
-      <div className="relative mx-auto flex max-w-[1500px] gap-4 p-3 md:gap-6 md:p-6">
-        <aside className="sticky top-6 hidden h-[calc(100vh-3rem)] w-64 shrink-0 flex-col rounded-3xl bg-sidebar p-5 text-sidebar-foreground shadow-lift lg:flex">
-          <Link to="/dashboard" className="flex items-center gap-3">
-            <span className="gradient-brand flex h-11 w-11 items-center justify-center rounded-2xl text-primary-foreground shadow-pop">
-              <Compass className="h-6 w-6" />
-            </span>
-            <span className="font-display text-xl font-bold tracking-tight">PathPilot</span>
-          </Link>
-          <p className="mt-3 text-xs leading-relaxed text-sidebar-foreground/60">
-            Turn what you're learning today into possibilities for tomorrow.
-          </p>
+      <div className="relative mx-auto max-w-[1280px] px-3 py-3 md:px-6 md:py-6">
+        <header className="rounded-3xl bg-card/85 shadow-pop backdrop-blur-xl">
+          <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-4 px-4 py-3 md:px-6">
+            <Link to="/dashboard" className="flex min-w-0 items-center gap-3">
+              <span className="gradient-brand flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl text-primary-foreground shadow-pop">
+                <Compass className="h-5 w-5" />
+              </span>
+              <span className="min-w-0">
+                <span className="block truncate font-display text-xl font-bold tracking-tight">
+                  PathPilot
+                </span>
+                <span className="hidden truncate text-xs text-muted-foreground sm:block">
+                  Turn what you're learning today into possibilities for tomorrow.
+                </span>
+              </span>
+            </Link>
 
-          <nav className="mt-7 flex flex-1 flex-col gap-1.5">
-            {nav.map((item) => {
-              const active = pathname === item.to;
-              return (
-                <Link
-                  key={item.to}
-                  to={item.to}
-                  className={`group relative flex items-center gap-3 rounded-2xl px-4 py-3 text-sm font-semibold transition-all ${
-                    active
-                      ? "bg-sidebar-accent text-sidebar-accent-foreground shadow-pop"
-                      : "text-sidebar-foreground/70 hover:bg-sidebar-accent/60 hover:text-sidebar-foreground"
-                  }`}
-                >
-                  {active && (
-                    <motion.span
-                      layoutId="nav-dot"
-                      className="absolute left-0 h-7 w-1.5 rounded-r-full bg-sidebar-primary"
-                    />
-                  )}
-                  <item.icon className="h-5 w-5" />
-                  {item.label}
-                </Link>
-              );
-            })}
-          </nav>
-
-          <div className="mt-4 rounded-2xl bg-sidebar-accent/70 p-4">
-            <p className="text-xs font-semibold uppercase tracking-wider text-sidebar-foreground/60">
-              Exploring
-            </p>
-            <p className="font-display text-base font-bold">
-              {hasChosenTrack ? role.title : "No track yet"}
-            </p>
-            <p className="mt-1 text-xs text-sidebar-foreground/70">
-              You can change this any time — nothing is final.
-            </p>
-          </div>
-
-          <Link
-            to="/"
-            className="mt-3 flex items-center gap-3 rounded-2xl px-4 py-3 text-sm font-semibold text-sidebar-foreground/60 transition-colors hover:bg-sidebar-accent/60 hover:text-sidebar-foreground"
-          >
-            <LogOut className="h-5 w-5" />
-            Log out
-          </Link>
-        </aside>
-
-        <div className="min-w-0 flex-1">
-          <header className="flex flex-wrap items-center gap-3 rounded-3xl bg-card/80 p-3 shadow-pop backdrop-blur-xl md:p-4">
-            <label className="flex min-w-0 flex-1 items-center gap-2 rounded-2xl bg-muted px-4 py-2.5">
-              <Search className="h-4 w-4 shrink-0 text-muted-foreground" />
-              <input
-                placeholder="Search subjects, skills, roles…"
-                className="min-w-0 flex-1 bg-transparent text-sm outline-hidden placeholder:text-muted-foreground"
-              />
-            </label>
-
-            <div className="flex items-center gap-3 rounded-2xl bg-muted px-3 py-2">
-              <span className="gradient-brand flex h-9 w-9 items-center justify-center rounded-xl text-sm font-bold text-primary-foreground">
+            <div className="flex shrink-0 items-center gap-2">
+              <div className="hidden rounded-2xl bg-muted px-3 py-1.5 text-right leading-tight lg:block">
+                <p className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground">
+                  Exploring
+                </p>
+                <p className="text-xs font-bold text-primary">
+                  {hasChosenTrack ? role.title : "No track yet"}
+                </p>
+              </div>
+              <span className="gradient-brand flex h-10 w-10 items-center justify-center rounded-2xl text-sm font-bold text-primary-foreground">
                 {firstName.slice(0, 1)}
                 {name.split(" ")[1]?.slice(0, 1)}
               </span>
-              <div className="hidden leading-tight sm:block">
+              <div className="hidden leading-tight xl:block">
                 <p className="text-sm font-bold">{name}</p>
                 <p className="text-xs text-muted-foreground">{year} · Computer Science</p>
               </div>
+              <Link
+                to="/"
+                aria-label="Log out"
+                className="flex h-10 w-10 items-center justify-center rounded-2xl bg-muted text-muted-foreground transition-colors hover:text-foreground"
+              >
+                <LogOut className="h-4 w-4" />
+              </Link>
             </div>
-          </header>
+          </div>
 
-          <nav className="mt-3 flex gap-2 overflow-x-auto pb-1 lg:hidden">
+          <nav className="flex gap-1 overflow-x-auto border-t border-border px-3 md:px-5">
             {nav.map((item) => {
               const active = pathname === item.to;
               return (
                 <Link
                   key={item.to}
                   to={item.to}
-                  className={`flex shrink-0 items-center gap-2 rounded-2xl px-3 py-2 text-xs font-bold ${
-                    active
-                      ? "gradient-brand text-primary-foreground"
-                      : "bg-card text-muted-foreground"
+                  className={`relative flex shrink-0 items-center gap-2 px-4 py-3.5 text-sm font-semibold transition-colors ${
+                    active ? "text-primary" : "text-muted-foreground hover:text-foreground"
                   }`}
                 >
                   <item.icon className="h-4 w-4" />
                   {item.label}
+                  {active && (
+                    <motion.span
+                      layoutId="nav-underline"
+                      className="absolute inset-x-3 -bottom-px h-[3px] rounded-full bg-primary"
+                    />
+                  )}
                 </Link>
               );
             })}
           </nav>
+        </header>
 
-          <main className="mt-4 pb-10">{children}</main>
-        </div>
+        <main className="mt-5 pb-10">{children}</main>
       </div>
     </div>
+  );
+}
+
+export function SectionCard({
+  icon: Icon,
+  title,
+  blurb,
+  children,
+  delay = 0,
+}: {
+  icon: React.ComponentType<{ className?: string }>;
+  title: string;
+  blurb?: string;
+  children: ReactNode;
+  delay?: number;
+}) {
+  return (
+    <motion.section
+      initial={{ opacity: 0, y: 14 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay }}
+      className="card-pop grid gap-5 p-6 lg:grid-cols-[minmax(0,15rem)_minmax(0,1fr)] lg:gap-8"
+    >
+      <div className="min-w-0">
+        <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-primary/12 text-primary">
+          <Icon className="h-5 w-5" />
+        </span>
+        <h2 className="mt-3 text-xl font-bold">{title}</h2>
+        {blurb && <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">{blurb}</p>}
+      </div>
+      <div className="min-w-0">{children}</div>
+    </motion.section>
   );
 }
 
