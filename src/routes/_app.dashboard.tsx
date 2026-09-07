@@ -60,7 +60,7 @@ function Gauge({ value }: { value: number }) {
 }
 
 const roadmap = [
-  { label: "Explore", state: "Completed", icon: Check },
+  { label: "Choosing a track", state: "Completed", icon: Check },
   { label: "Learn & build", state: "In progress", icon: BookOpen },
   { label: "Gain experience", state: "Next", icon: Target },
   { label: "Land your first role", state: "Upcoming", icon: Flag },
