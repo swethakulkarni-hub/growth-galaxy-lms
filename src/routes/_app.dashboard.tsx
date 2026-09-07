@@ -5,6 +5,7 @@ import { gapsForRole, myCourses, student, targetRoles } from "@/data/demo";
 import { useStudent } from "@/context/StudentContext";
 import { CountUp } from "@/components/CountUp";
 import { SectionCard } from "@/components/AppShell";
+import { PathPointerRail } from "@/components/PathPointers";
 
 export const Route = createFileRoute("/_app/dashboard")({
   head: () => ({
