@@ -295,6 +295,7 @@ function DashboardPage() {
           </Link>
         </div>
       </SectionCard>
+      </div>
     </div>
   );
 }
