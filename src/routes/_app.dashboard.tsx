@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion } from "motion/react";
 import { ArrowRight, BookOpen, Check, Compass, Flag, Gauge as GaugeIcon, Map, Target } from "lucide-react";
-import { gapsForRole, myCourses, student, targetRoles } from "@/data/demo";
+import { gapsForRole, myCourses, targetRoles } from "@/data/demo";
 import { useStudent } from "@/context/StudentContext";
 import { CountUp } from "@/components/CountUp";
 import { SectionCard } from "@/components/AppShell";
