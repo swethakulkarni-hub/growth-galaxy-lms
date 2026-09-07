@@ -93,7 +93,7 @@ function Roadmap({ role }: { role: string }) {
               <step.icon className="h-5 w-5" />
             </span>
             <div className="min-w-0">
-              <p className="truncate text-sm font-bold">{step.label}</p>
+              <p className="text-sm font-bold leading-tight">{step.label}</p>
               <p
                 className={`text-xs font-semibold ${
                   done || current ? "text-primary" : "text-muted-foreground"
