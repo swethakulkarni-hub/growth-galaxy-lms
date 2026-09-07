@@ -117,7 +117,8 @@ function Roadmap({ role }: { role: string }) {
 }
 
 function DashboardPage() {
-  const { firstName, role, roleId, hasChosenTrack, setRoleId } = useStudent();
+  const { firstName, role, roleId, hasChosenTrack, setRoleId, readiness, subScores, skillsCompared } =
+    useStudent();
   const gaps = gapsForRole(roleId ?? targetRoles[0]!.id);
   const topGap = gaps[0]!;
   const learning = myCourses.map((c) => c.closesSkill);
