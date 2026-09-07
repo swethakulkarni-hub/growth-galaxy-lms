@@ -122,7 +122,10 @@ function DashboardPage() {
   const learning = myCourses.map((c) => c.closesSkill);
 
   return (
-    <div className="space-y-5">
+    <div className="grid gap-6 lg:grid-cols-[minmax(0,13rem)_minmax(0,1fr)] lg:gap-8">
+      <PathPointerRail />
+
+      <div className="min-w-0 space-y-5">
       <motion.section
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
@@ -138,6 +141,7 @@ function DashboardPage() {
           right at this stage, and that's what PathPilot is for.
         </p>
       </motion.section>
+
 
       <SectionCard
         icon={Map}
