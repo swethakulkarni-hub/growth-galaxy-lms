@@ -298,3 +298,62 @@ export function gapsForRole(roleId: string) {
     })
     .sort((a, b) => b.gap - a.gap);
 }
+
+const clamp = (n: number) => Math.max(0, Math.min(100, Math.round(n)));
+
+/** Weighted coverage of the student's levels against a role's expectations. */
+function coverage(roleId: string, categories?: Skill["category"][]) {
+  const role = targetRoles.find((r) => r.id === roleId) ?? targetRoles[0]!;
+  const pool = categories ? skills.filter((s) => categories.includes(s.category)) : skills;
+  let weighted = 0;
+  let weight = 0;
+  for (const s of pool) {
+    const required = role.benchmark[s.name] ?? 40;
+    weighted += required * Math.min(1, s.level / Math.max(1, required));
+    weight += required;
+  }
+  return weight === 0 ? 0 : clamp((weighted / weight) * 100);
+}
+
+export function readinessForRole(roleId: string) {
+  const role = targetRoles.find((r) => r.id === roleId) ?? targetRoles[0]!;
+
+  const technical = coverage(roleId, ["Technical", "Data"]);
+  const communication = coverage(roleId, ["Communication", "Business", "Design"]);
+
+  // Projects: how far current coursework carries the skills this role weights highly.
+  let projWeighted = 0;
+  let projWeight = 0;
+  for (const c of myCourses) {
+    const required = role.benchmark[c.closesSkill] ?? 40;
+    projWeighted += required * (c.completed / 100);
+    projWeight += required;
+  }
+  const projects = projWeight === 0 ? 0 : clamp((projWeighted / projWeight) * 100);
+
+  // Market fit: this role's demand and growth relative to the other tracks.
+  const demandOf = (r: TargetRole) => r.openingsTrend[r.openingsTrend.length - 1] ?? 0;
+  const demands = targetRoles.map(demandOf);
+  const growths = targetRoles.map((r) => r.growth);
+  const norm = (v: number, all: number[]) => {
+    const min = Math.min(...all);
+    const max = Math.max(...all);
+    return max === min ? 70 : ((v - min) / (max - min)) * 100;
+  };
+  const marketFit = clamp(
+    0.5 * norm(demandOf(role), demands) + 0.5 * norm(role.growth, growths) * 0.9 + 8,
+  );
+
+  const score = clamp(0.5 * coverage(roleId) + 0.25 * projects + 0.15 * communication + 0.1 * marketFit);
+
+  return {
+    score,
+    skillsCompared: skills.length,
+    subScores: [
+      { label: "Technical", value: technical },
+      { label: "Projects", value: projects },
+      { label: "Communication", value: communication },
+      { label: "Market fit", value: marketFit },
+    ],
+  };
+}

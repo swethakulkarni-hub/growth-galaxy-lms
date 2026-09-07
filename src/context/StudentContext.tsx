@@ -1,5 +1,5 @@
 import { createContext, useContext, useMemo, useState, type ReactNode } from "react";
-import { student, targetRoles } from "@/data/demo";
+import { readinessForRole, student, targetRoles } from "@/data/demo";
 
 type StudentContextValue = {
   name: string;
@@ -7,6 +7,8 @@ type StudentContextValue = {
   year: string;
   program: string;
   readiness: number;
+  subScores: { label: string; value: number }[];
+  skillsCompared: number;
   roleId: string | null;
   setRoleId: (id: string) => void;
   role: (typeof targetRoles)[number];
@@ -22,23 +24,26 @@ export function StudentProvider({ children }: { children: ReactNode }) {
   const [roleId, setRoleId] = useState<string | null>(targetRoles[0]!.id);
   const [signedIn, setSignedIn] = useState(false);
 
-  const value = useMemo<StudentContextValue>(
-    () => ({
+  const value = useMemo<StudentContextValue>(() => {
+    const role = targetRoles.find((r) => r.id === roleId) ?? targetRoles[0]!;
+    const readiness = readinessForRole(role.id);
+    return {
       name: student.name,
       firstName: student.firstName,
       year: student.year,
       program: student.program,
-      readiness: student.readiness,
+      readiness: readiness.score,
+      subScores: readiness.subScores,
+      skillsCompared: readiness.skillsCompared,
       roleId,
       setRoleId,
-      role: targetRoles.find((r) => r.id === roleId) ?? targetRoles[0]!,
+      role,
       hasChosenTrack: roleId !== null,
       signedIn,
       signIn: () => setSignedIn(true),
       signOut: () => setSignedIn(false),
-    }),
-    [roleId, signedIn],
-  );
+    };
+  }, [roleId, signedIn]);
 
   return <StudentContext.Provider value={value}>{children}</StudentContext.Provider>;
 }
