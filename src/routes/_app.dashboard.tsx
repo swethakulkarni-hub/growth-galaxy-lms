@@ -202,9 +202,9 @@ function DashboardPage() {
         delay={0.1}
       >
         <div className="flex flex-wrap items-center gap-6">
-          <Gauge value={student.readiness} />
+          <Gauge key={role.id} value={readiness} />
           <div className="min-w-[200px] flex-1 space-y-2.5">
-            {student.subScores.map((s) => (
+            {subScores.map((s) => (
               <div key={s.label}>
                 <div className="flex justify-between text-xs font-bold">
                   <span>{s.label}</span>
@@ -213,8 +213,8 @@ function DashboardPage() {
                 <div className="mt-1 h-1.5 overflow-hidden rounded-full bg-muted">
                   <motion.div
                     className="h-full rounded-full bg-primary"
-                    initial={{ width: 0 }}
                     animate={{ width: `${s.value}%` }}
+                    initial={{ width: 0 }}
                     transition={{ duration: 0.8 }}
                   />
                 </div>
@@ -222,6 +222,11 @@ function DashboardPage() {
             ))}
           </div>
         </div>
+        <p className="pt-4 text-xs text-muted-foreground">
+          Based on {skillsCompared} skills compared against {role.title} expectations, plus your
+          coursework and how the market is moving for this role. Switch track above and this
+          recalculates.
+        </p>
       </SectionCard>
 
       <SectionCard
