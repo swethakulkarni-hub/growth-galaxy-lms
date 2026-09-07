@@ -5,6 +5,7 @@ import { gapsForRole, myCourses, student, targetRoles } from "@/data/demo";
 import { useStudent } from "@/context/StudentContext";
 import { CountUp } from "@/components/CountUp";
 import { SectionCard } from "@/components/AppShell";
+import { PathPointerRail } from "@/components/PathPointers";
 
 export const Route = createFileRoute("/_app/dashboard")({
   head: () => ({
@@ -92,7 +93,7 @@ function Roadmap({ role }: { role: string }) {
               <step.icon className="h-5 w-5" />
             </span>
             <div className="min-w-0">
-              <p className="truncate text-sm font-bold">{step.label}</p>
+              <p className="text-sm font-bold leading-tight">{step.label}</p>
               <p
                 className={`text-xs font-semibold ${
                   done || current ? "text-primary" : "text-muted-foreground"
@@ -122,7 +123,10 @@ function DashboardPage() {
   const learning = myCourses.map((c) => c.closesSkill);
 
   return (
-    <div className="space-y-5">
+    <div className="grid gap-6 md:grid-cols-[minmax(0,12rem)_minmax(0,1fr)] md:gap-7">
+      <PathPointerRail />
+
+      <div className="min-w-0 space-y-5">
       <motion.section
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
@@ -138,6 +142,7 @@ function DashboardPage() {
           right at this stage, and that's what PathPilot is for.
         </p>
       </motion.section>
+
 
       <SectionCard
         icon={Map}
@@ -291,6 +296,7 @@ function DashboardPage() {
           </Link>
         </div>
       </SectionCard>
+      </div>
     </div>
   );
 }
