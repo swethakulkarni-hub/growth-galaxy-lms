@@ -24,14 +24,14 @@ export const pathPointers = [
 /** Left-hand rail of student pointers — mirrors the sign-in page framing. */
 export function PathPointerRail() {
   return (
-    <aside className="space-y-7 lg:sticky lg:top-6">
+    <aside className="space-y-7 md:sticky md:top-6">
       {pathPointers.map((p, i) => (
         <motion.div
           key={p.hand}
           initial={{ opacity: 0, x: -16 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: 0.15 + i * 0.12, duration: 0.45 }}
-          className="grid grid-cols-[auto_minmax(0,1fr)] items-center gap-4 lg:grid-cols-1 lg:justify-items-center lg:gap-2 lg:text-center"
+          className="grid grid-cols-[auto_minmax(0,1fr)] items-center gap-4 md:grid-cols-1 md:justify-items-center md:gap-2 md:text-center"
         >
           <span className="relative shrink-0">
             <span className="gradient-brand absolute -inset-1 rounded-full opacity-30 blur-[6px]" />
@@ -41,7 +41,7 @@ export function PathPointerRail() {
               loading="lazy"
               width={512}
               height={512}
-              className="relative h-16 w-16 rounded-full object-cover ring-4 ring-card lg:h-20 lg:w-20"
+              className="relative h-16 w-16 rounded-full object-cover ring-4 ring-card md:h-20 md:w-20"
             />
           </span>
           <div className="min-w-0">

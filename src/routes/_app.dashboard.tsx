@@ -123,7 +123,7 @@ function DashboardPage() {
   const learning = myCourses.map((c) => c.closesSkill);
 
   return (
-    <div className="grid gap-6 lg:grid-cols-[minmax(0,13rem)_minmax(0,1fr)] lg:gap-8">
+    <div className="grid gap-6 md:grid-cols-[minmax(0,12rem)_minmax(0,1fr)] md:gap-7">
       <PathPointerRail />
 
       <div className="min-w-0 space-y-5">
