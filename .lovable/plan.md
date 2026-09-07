@@ -15,14 +15,10 @@ Land your first role → Upcoming
 
 The label "Explore" + "Completed" conflicts with the product message that students are still exploring and nothing is final.
 
-## Proposed options
-Pick one of these replacements for the first step:
+## Decision
+Use the label **"Choosing a track"** for the first roadmap step.
 
-1. **"Choose a track"** — Clear, action-oriented, implies a current (not final) choice.
-2. **"Set your direction"** — Friendly, suggests a heading rather than a permanent decision.
-3. **"Pick a goal to try"** — Emphasizes the trial / exploratory nature most directly.
-
-For each option the state remains "Completed" because the student has completed the action of picking/setting something, while the surrounding copy on the page already explains the choice is not final.
+The state remains "Completed" because the student has completed the action of picking a track to explore, while the surrounding copy on the page already explains the choice is not final.
 
 ## Implementation
 - Update the `roadmap` array in `src/routes/_app.dashboard.tsx` to use the chosen label.
