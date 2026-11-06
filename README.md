@@ -1,14 +1,18 @@
-# Welcome to your Lovable project
+# Skill Spark Hub
+
+Build a Student LMS website where students login to check their career readiness, skill-gap analysis, understand what courses are trending in the market, get the market pulse for the skills, interesting ways to get the students to complete certifications etc. Use the attached image as the inspiration, since it is for the students, make it interesting and fun.
 
 This project was built with [Lovable](https://lovable.dev).
 
+**Live app**: https://growth-galaxy-lms.lovable.app
+
 ## Build with Lovable
 
-Open your project in the [Lovable editor](https://lovable.dev) and keep building.
+Continue developing this project in the [Lovable editor](https://lovable.dev/projects/20cba48a-ce90-41f9-b717-c3a653151f88).
 
 - **Ship faster**: describe what you want to build and Lovable handles the code.
-- **Stay in sync**: connect the project to GitHub and every change made in Lovable is committed straight to your repository.
-- **Full ownership**: this code is yours. Push to your repository and your changes sync back into Lovable, ready for your next prompt.
+- **Stay in sync**: every change made in Lovable is committed straight to this repository.
+- **Full ownership**: this code is yours. Push to `main` on GitHub and your changes sync back into Lovable, ready for your next prompt.
 
 ## Development
 
@@ -20,10 +24,3 @@ cd <repository-name>
 npm i
 npm run dev
 ```
-
-## Built with
-
-- TanStack Start
-- TypeScript
-- React
-- Tailwind CSS
