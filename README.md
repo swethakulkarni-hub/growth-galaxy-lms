@@ -1,4 +1,4 @@
-# Skill Spark Hub
+# PathPilot
 
 Build a Student LMS website where students login to check their career readiness, skill-gap analysis, understand what courses are trending in the market, get the market pulse for the skills, interesting ways to get the students to complete certifications etc. Use the attached image as the inspiration, since it is for the students, make it interesting and fun.
 
